@@ -1,0 +1,24 @@
+#!/bin/bash 
+
+#
+# usage:
+#   remove_if_exits file/dir
+# return:
+#   true on success
+#   false on error
+#
+function remove_if_exists()
+{
+	echo "removing $1"
+	rm -r "$1"
+}
+
+remove_if_exists /usr/local/bin/mbackup
+remove_if_exists $HOME/bin/mb
+remove_if_exists $HOME/bin/update-bakup-list
+remove_if_exists $HOME/bak/backup.userlist
+remove_if_exists $HOME/backup
+remove_if_exists /var/log/mbackup.log
+remove_if_exists /var/log/mbackup.err
+
+# you should remove crontab lines manually

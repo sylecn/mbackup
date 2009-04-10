@@ -1,0 +1,97 @@
+mbackup-0.2
+
+root crontab -e:
+00 20 * * * /usr/local/bin/mbackup
+user crontab -e:
+00 20 * * 1 /home/sylecn/bin/update-backup-list
+
+final code:
+  thoughts on wrapper script, things I need to add in script:
+    [x] changing DEST dir, that's a stupid idear.
+    [x] add mark for begin and end of backup in log, that's verbose.
+          these is already time stamp there. easy to locate.
+    [?] inform user any error that cron backup (rsync) produce, via exit code
+          how to inform? build&use local email system?
+          inform by add log to /var/log/mbackup.err
+  wrapper script for manual backup: ~/bin/mb
+  wrapper script for cron backup: /usr/local/bin/mbackup
+
+  *before init backup, check backup file, dry-run, clear&check log:
+    sudo rsync -h --list-only --delete-during -n -a -r --log-file=/var/log/mbackup.log --files-from=/home/sylecn/bak/backup / /backup
+    sudo rsync -h -n --delete-during -a -r --log-file=/var/log/mbackup.log --files-from=/home/sylecn/bak/backup / /backup
+
+  *do cron backup (root):
+    /usr/bin/rsync -q -h --delete-during -a -r --log-file=/var/log/mbackup.log --files-from=/home/sylecn/bak/backup / /backup
+    /home/sylecn/bin/mbackup
+
+  *do manual backup:
+    sudo rsync -h --delete-during -a -r --log-file=/var/log/mbackup.log --files-from=/home/sylecn/bak/backup / /backup
+    #show what's being updated
+    sudo rsync -h --itemize-changes --delete-during -a -r --log-file=/var/log/mbackup.log --files-from=/home/sylecn/bak/backup / /backup
+
+  *cp backup files to external media:
+    sudo rsync -h --delete-during -a -r --log-file=/var/log/mbackup.log /backup /media/BAKUP
+    sudo rsync -h --itemize-changes --delete-during -a -r --log-file=/var/log/mbackup.log /backup /media/BAKUP
+
+todo:
+  add func: allow exclude file/dir in (maybe) ~/no-backup
+
+done!
+  check what if files in backup not exists
+    that file is omitted, reported on console, and "IO error encountered -- skipping file deletion"
+  check what if files in backup repeat/duplicate
+    nothing wrong, that's ok
+  check whether log file is working, log should added at end of file each time
+    yes, log is working perfectly.
+  "mb /media/BAKUP init" still output many information?
+    that's a bug in script, if "]" stick with expression. fixed.
+  add ~/bak/svimfiles to --from-file 
+    done! add update-backup-list script to do that in cron.
+  remove all "/home/sylecn" string in all scripts, make it portable to other user
+    done! use $HOME instead
+
+
+features:
+  read files which need backup in config file
+
+spec:
+mbackup
+mb
+mb <path>            move backup to <path> after a manual backup
+
+apis:
+  rsync 
+
+tests:
+  mb
+    run the default backup
+  mb /path/to/dir [init]
+    backup to /path/to/dir after doing default backup
+  mbackup
+    cron job, run the default backup, quietly
+  [x] mbackup -n
+    dry run the default backup, do not make any change, including dirs
+    -n -v
+    -n --itemize-changes
+  rsync
+    sample usage:
+      rsync -a --files-from=/home/sylecn/backup / /backup
+    arguments:
+      --files-from=FILE
+        implies
+          -R Use relative paths. Pre‐serving its full path.
+               rsync -avR /foo/bar/baz.c /tmp/
+          -d --dirs
+          -a but without -r, if you also need -r, specify it explicitly
+      -a equals -rlptgoD (no -H,-A,-X)
+         that's: recursive links perms times group owner -D(equivalent to --devices --specials)
+      --backup --backup-dir=DIR preexisting destination files will be backup into DIR
+      --delete-during delete extraneous files from the receiving side, implies --delete
+      -h, --human-readable
+    debug-arguments:
+      --list-only This option will cause the source files to be listed instead of transferred.
+  myrsync /path/to/source /path/to/target
+    rsync source to target, keep privi
+    source must be existing file/dir, target must be existing dir, return error if anything is wrong
+  backup /path/to/source
+    backup source, show warning if source does not exists

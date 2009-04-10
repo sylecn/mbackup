@@ -1,0 +1,53 @@
+If specified as a client option, transfer logging will be enabled with a default 
+format of “%i %n%L”. See the --log-file-format option if you wish to override this.
+
+%i
+%n
+%L
+
+The single-character escapes that are understood are as follows:
+
+o      %a the remote IP address
+
+o      %b the number of bytes actually transferred
+
+o      %B the permission bits of the file (e.g. rwxrwxrwt)
+
+o      %c the checksum bytes received for this file (only when sending)
+
+o      %f the filename (long form on sender; no trailing “/”)
+
+o      %G the gid of the file (decimal) or “DEFAULT”
+
+o      %h the remote host name
+
+o      %i an itemized list of what is being updated
+
+o      %l the length of the file in bytes
+
+o      %L the string “ -> SYMLINK”,  “  =>  HARDLINK”,  or  “”  (where  SYMLINK  or
+	 HARDLINK is a filename)
+
+o      %m the module name
+
+o      %M the last-modified time of the file
+
+o      %n the filename (short form; trailing “/” on dir)
+
+o      %o  the  operation,  which is “send”, “recv”, or “del.” (the latter includes
+	 the trailing period)
+
+o      %p the process ID of this rsync session
+
+o      %P the module path
+
+o      %t the current date time
+
+o      %u the authenticated username or an empty string
+
+o      %U the uid of the file (decimal)
+
+For a list of what the characters mean that are output by  “%i”,  see  the  --item‐
+ize-changes option in the rsync manpage.
+
+

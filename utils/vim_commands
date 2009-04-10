@@ -1,0 +1,12 @@
+#from filelist to bash source script
+
+# replace ~ with /home/sylecn
+%s:\~:/home/sylecn:
+
+# add quotes to all file items
+%s:\(^/.*\):"\1"
+
+# add "backup " to start of every file line
+%s:\("/.*\):backup\ \1:
+
+# ok.

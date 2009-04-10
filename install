@@ -1,0 +1,44 @@
+#!/bin/bash 
+
+#TODO this file is out-dated, don't use.
+# ref to ~/mini-howto/cron-mbackup for installation notes
+
+if ! [ -e /usr/local/bin/mbackup ]
+then
+	sudo cp mbackup /usr/local/bin/
+fi
+
+if ! [ -d $HOME/bin ]
+then
+	mkdir $HOME/bin
+	source $HOME/.profile
+fi
+
+if ! [ -e $HOME/bin/mb ]
+then
+	cp mb $HOME/bin/
+fi
+
+if ! [ -e $HOME/bin/update-bakup-list ]
+then
+	cp update-bakup-list $HOME/bin/
+fi
+
+if ! [ -e $HOME/bak/backup.userlist ]
+then
+	cp backup.userlist $HOME/bak/
+fi
+
+if ! [ -e $HOME/backup ]
+then
+	ln -s $HOME/bak/backup.userlist $HOME/backup
+fi
+
+sudo touch /var/log/mbackup.log
+sudo chown root:adm /var/log/mbackup.log
+sudo chmod 640 /var/log/mbackup.log
+sudo touch /var/log/mbackup.err
+sudo chown root:adm /var/log/mbackup.err
+sudo chmod 640 /var/log/mbackup.err
+
+# you should setup crontab manually
