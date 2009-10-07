@@ -1,0 +1,236 @@
+#this file should be updated *manually*
+#the following things should come here
+#	all important system files/configs not in ~/bak/svimed_files 
+#	user defined data files
+#	server roots
+#	user's own configs
+
+#notice -- see rsync man page
+#  these filenames are all relative to the source dir (in my case "/")
+#  any leading slashes are removed and no “..” references are allowed to go
+#  higher than the source dir.
+
+#notice -- try not to add single data file here. (confs are just fine)
+#  please add dir and use the exclude file to filter what you don't want.
+#  this will allow rsync delete the file removed from this list easily.
+
+#
+# outside /home
+#
+
+# system configs not in ~/bak/backup.svimfiles or you want to make sure they
+# are backuped.
+/etc/fstab
+/etc/apt
+/etc/sudoers
+/etc/crontab
+/etc/davfs2/secrets
+/etc/rsyslog.conf
+/etc/iptables.conf
+/etc/fetchmailrc
+
+# boot related
+# kernels
+/boot
+# grub configs
+/etc/default/grub
+/etc/grub.d
+
+# system logs
+#/var/log/aptitude
+#/var/log/dpkg.log
+#/var/log/auth.log
+#/var/log/Xorg.0.log
+#/var/log/fetchmail.log
+#/var/log/mbackup.log
+
+#after configing rsyslog.conf and 
+#because of existence of .1 files, I decide to backup whole /var/log
+/var/log
+
+# server config
+
+# server content
+
+# local programs
+/usr/local/bin/mbackup
+/etc/init.d/iptables
+
+#
+# inside /home
+#
+
+# user configs
+#======================================================================
+#most important configs
+#======================================================================
+#also backup the ~/.git repo to /backup/, this is specialy because ~/ is not
+#backuped. so ~/.git must be add explicitly here.
+/home/sylecn/.git
+/home/sylecn/.vimrc
+/home/sylecn/.vim
+/home/sylecn/.profile
+/home/sylecn/.bashrc
+/home/sylecn/.bash_aliases
+/home/sylecn/.xmodmaprc
+/home/sylecn/.Xdefaults
+/home/sylecn/.Xresources
+/home/sylecn/.gtk-bookmarks
+/home/sylecn/.toprc
+/home/sylecn/.edwin
+/home/sylecn/.emacs
+/home/sylecn/.emacs-custom.el
+/home/sylecn/.emacs.d
+/home/sylecn/.abbrev_defs
+/home/sylecn/.emacs-w3m
+/home/sylecn/.newsrc
+/home/sylecn/.newsrc.eld
+/home/sylecn/.projects.ede
+/home/sylecn/Makefile
+/home/sylecn/.w3m/keymap
+/home/sylecn/.w3m/bookmark.html
+#/home/sylecn/.w3m
+/home/sylecn/.emacs-places
+/home/sylecn/.emacs.bmk
+/home/sylecn/.gitconfig
+/home/sylecn/.gitignore
+/home/sylecn/.gitk
+/home/sylecn/.active_git_repos
+/home/sylecn/.tarconf
+/home/sylecn/acl2-customization.lisp
+/home/sylecn/.gnucash
+/home/sylecn/.procmailrc
+/home/sylecn/.muttrc
+/home/sylecn/.mutt
+/home/sylecn/.mailcap
+/home/sylecn/.mime.types
+/home/sylecn/.gnome2/mail-notification/mailboxes.xml
+/home/sylecn/.mozilla/firefox
+/home/sylecn/.mplayer
+/home/sylecn/.fonts.conf
+/home/sylecn/.pyzor
+/home/sylecn/.spamassassin
+#for the F12 switch shortcut
+/home/sylecn/.scim
+/home/sylecn/.ibus
+#for using scim or ibus under en_US.UTF-8
+#you can use im-switch to set default im under en_US.UTF-8 as well
+#but i find it easier to do in my way
+/home/sylecn/.xinput.d
+/home/sylecn/.weatherrc
+/home/sylecn/.lftp
+/home/sylecn/.xchat2/xchat.conf
+#======================================================================
+#private info included
+#======================================================================
+/home/sylecn/.ssh
+/home/sylecn/.gnome2/keyrings
+#.gnupg - currently no private keys there yet.
+/home/sylecn/.gnupg
+#for cadaver, automatically logging
+/home/sylecn/.netrc
+#/home/sylecn/.msmtprc
+/home/sylecn/.fetchmailrc
+/home/sylecn/.authinfo
+#======================================================================
+#less important configs
+#======================================================================
+#/home/sylecn/.filezilla
+#for python nose unit test
+/home/sylecn/.noserc
+#/home/sylecn/.irssi/config
+#/home/sylecn/.qterm
+/home/sylecn/.davfs2/davfs2.conf
+/home/sylecn/.gconf
+
+# user logs/histories
+/home/sylecn/.octave_hist
+/home/sylecn/.bash_history
+/home/sylecn/.slime-history.eld
+/home/sylecn/.viminfo
+
+# user softs
+#for linux
+/home/sylecn/soft/network/u.exe
+/home/sylecn/soft/wine/IPMSGCHS.exe
+/home/sylecn/soft/multimedia/yEd3_1_1.sh
+/home/sylecn/soft/multimedia/all-20071007.tar.bz2
+/home/sylecn/soft/multimedia/windows-all-20071007.zip
+/home/sylecn/soft/game/winning11gb2312.html
+/home/sylecn/soft/cellphone
+/home/sylecn/soft/office/fitx
+#for windows
+/home/sylecn/winsoft/my
+
+# user downloaded documentations
+#/home/sylecn/helps/info
+/home/sylecn/helps/lisp/mit-scheme
+/home/sylecn/helps/tex
+/home/sylecn/helps/vi
+/home/sylecn/helps/emacs
+/home/sylecn/helps/matlab
+/home/sylecn/helps/java/jdk-6-doc.zip
+/home/sylecn/helps/html
+/home/sylecn/helps/webdesign
+/home/sylecn/helps/python/OReilly.Programming.Python.3rd.Edition.Aug.2006.chm
+/home/sylecn/helps/python/Oreilly.Learning.Python.2nd.Edition.eBook-LiB.chm
+/home/sylecn/helps/python/digists
+/home/sylecn/helps/python/nose.html
+/home/sylecn/helps/python/nose_files
+/home/sylecn/helps/php/mynotes
+/home/sylecn/helps/cpp
+/home/sylecn/helps/linux/OReilly.Managing.Projects.with.GNU.make.3rd.Edition.Nov.2004.eBook-DDU.chm
+/home/sylecn/helps/generalProgramming
+
+# user datas
+# mail
+/var/mail/sylecn
+/home/sylecn/mails
+# files
+/home/sylecn/learnlinux
+/home/sylecn/notes
+/home/sylecn/todo
+/home/sylecn/done
+/home/sylecn/low
+/home/sylecn/low.c
+/home/sylecn/debian_my
+/home/sylecn/progress
+/home/sylecn/payment
+/home/sylecn/ta
+# dirs
+/home/sylecn/bak
+/home/sylecn/finance
+/home/sylecn/texts
+/home/sylecn/office
+/home/sylecn/.fonts
+/home/sylecn/.themes
+/home/sylecn/.icons
+/home/sylecn/projects
+/home/sylecn/sysadmin
+/home/sylecn/install
+/home/sylecn/winoffice
+/home/sylecn/photos
+/home/sylecn/pictures
+/home/sylecn/mini-howto
+/home/sylecn/life
+/home/sylecn/story
+/home/sylecn/bin
+/home/sylecn/UnSafe
+/home/sylecn/ut
+#gpg public keys
+/home/sylecn/keys
+# programming dirs
+/home/sylecn/trac-projects
+/home/sylecn/workspace
+/home/sylecn/NetBeansProjects
+/home/sylecn/cpp
+/home/sylecn/html
+/home/sylecn/lisp
+/home/sylecn/java
+/home/sylecn/python
+/home/sylecn/delphi
+/home/sylecn/scripts
+/home/sylecn/matlab
+# homeworks, study related
+/home/sylecn/study
+/home/sylecn/.qucs
