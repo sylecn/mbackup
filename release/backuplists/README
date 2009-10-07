@@ -1,0 +1,36 @@
+Backup lists and Exclude lists
+------------------------------
+
+There are two kinds of lists, one is for files to backup, one is for files to
+exclude from backup.
+
+lists named user.* are backup lists.
+lists named excl.* are exclude lists.
+
+A backup list is used in rsync --files-from option.
+An exclude list is used in rsync --exclude-from option.
+
+For detailed syntax see man rsync, esp. INCLUDE/EXCLUDE PATTERN RULES section.
+
+Here is a brief note on the format of backup list:
+
+#filenames are all relative to the source dir (in my case "/")
+#  any leading slashes are removed and no “..” references are allowed to go
+#  higher than the source dir.
+
+#try not to add a single file here. (confs are just fine)
+#  please add dir and use the exclude file to filter what you don't want.
+#  this will allow rsync delete the backup file once you remove it from the list
+
+#files and dirs should *not* end with '/'
+#files and dirs should always use absolute path start with "/", without ".." "."
+
+Here is a brief note on the format of exclude list:
+
+#things you don't want to include in backup should come here
+#  big files in dir
+#  large amount of small files in dir
+#  cache files or other tmp files
+
+#use *** to match all files and subdirs in the dir
+#use * to match any char except /

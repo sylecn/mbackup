@@ -42,6 +42,8 @@ user.publicconfigs
 user.private
 excl.default
 
+read the README file in that dir for more infomation.
+
 TODO ubl will read all user.* as backup list
      ubl will read all excl.* as exclude list
 
@@ -62,32 +64,4 @@ add your backup lists file to your backup list.
 add all files you want to backup in your backup lists.
 
 [backup list format]
-A backup list is used for rsync in
---files-from
---exclude-from
-options.
-For detailed syntax see man rsync, esp. INCLUDE/EXCLUDE PATTERN RULES section.
-
-the format for backup list:
----------------------------
-#filenames are all relative to the source dir (in my case "/")
-#  any leading slashes are removed and no “..” references are allowed to go
-#  higher than the source dir.
-
-#try not to add a single file here. (confs are just fine)
-#  please add dir and use the exclude file to filter what you don't want.
-#  this will allow rsync delete the backup file once you remove it from the list
-
-#files and dirs should *not* end with '/'
-#files and dirs should always use absolute path start with "/", without ".." "."
-
-the format for exclude file list:
----------------------------------
-#things you don't want to include in backup should come here
-#  big files in dir
-#  large amount of small files in dir
-#  cache files or other tmp files
-
-#use *** to match all files and subdirs in the dir
-#use * to match any char except /
-
+see ~/.mbackup/backuplists/README

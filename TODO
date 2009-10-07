@@ -22,16 +22,19 @@
 
   ~/.mbackup/backuplists/auto.exclude
   ~/.mbackup/backuplists/auto.exclude.header
-  
-  ~/.mbackup/backuplists/auto.svim
-  ~/.mbackup/backuplists/auto.svim.header
-  TODO in ubl. remove files already deleted from svimlog.
 
   ~/.mbackup/backuplists/user.public            any thing doesn't belong below
   ~/.mbackup/backuplists/user.publicconfigs     public configs, small file size
   ~/.mbackup/backuplists/user.private           private keys, passwords, credit cards, ...
 
   ~/.mbackup/backuplists/excl.default           global exclude list
+
+  other user added lists, must follow naming convention.
+  ~/.mbackup/backuplists/user.svim
+  #this file doesn't belong here, should be part of svim project
+  #~/.mbackup/backuplists/user.svim.header
+  TODO in ubl. remove files already deleted from svimlog.
+  TODO build svim to a separate program, not only a alias/function.
 
 * changes needed for mbackup
   add config file for vars in mb and mbackup.

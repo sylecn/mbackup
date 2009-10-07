@@ -1,0 +1,14 @@
+# this is the backup list for private user data
+# see README file in this dir for more infomation
+
+#notice:
+#files and dirs should *not* end with '/'
+#files and dirs should always use absolute path start with "/", without ".." "."
+
+#a few things might be good to be here:
+#  config files containing passwords or private keys
+#      /etc/fetchmailrc
+#      ~/.ssh
+#  text files containing credit card numbers etc
+#  files containing biological info, diary, address, etc
+
