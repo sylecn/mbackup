@@ -1,0 +1,48 @@
+* DONE backup all old configs and scripts.
+  see current-working-backup/
+* new file structure
+  #scripts, no change
+  ~/bin/ubl
+  ~/bin/mb
+  /usr/local/bin/mbackup
+
+  #backup list, see below
+* backup list will be shared for:
+  mbackup
+  tarconf
+    TODO how to make a tar ball using rsync format file list?
+  rsync.net backup
+* backup list files
+  files named auto.* are auto generated lists
+  files named user.* are user maintained lists
+  
+  #the main backup file for local mbackup cron job
+  ~/.mbackup/backuplists/auto.backup
+  ~/.mbackup/backuplists/auto.backup.header
+
+  ~/.mbackup/backuplists/auto.exclude
+  ~/.mbackup/backuplists/auto.exclude.header
+  
+  ~/.mbackup/backuplists/auto.svim
+  ~/.mbackup/backuplists/auto.svim.header
+  TODO in ubl. remove files already deleted from svimlog.
+
+  ~/.mbackup/backuplists/user.public            any thing doesn't belong below
+  ~/.mbackup/backuplists/user.publicconfigs     public configs, small file size
+  ~/.mbackup/backuplists/user.private           private keys, passwords, credit cards, ...
+
+  ~/.mbackup/backuplists/excl.default           global exclude list
+
+* changes needed for mbackup
+  add config file for vars in mb and mbackup.
+  see how cbl is used. merge cbl? cbl is not used directly by the user.
+  rewrite ubl
+  how to use rsyslog? will it create a log file with right permission for me?
+
+* changes needed for tarconf
+* create rsync.net-backup
+  
+* formalize this program						:low:
+  TODO write a installer
+  TODO write a man page
+  
