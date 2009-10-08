@@ -16,14 +16,9 @@ echo "updating $rsync_exclude ..."
 
 private_list="${backuplistsdir}/user.private"
 
-cat > $rsync_exclude <<EOF
-#DO NOT MODIFY THIS FILE
-#this file is generated automatically and updated frequently by cron script
-#if you need to add private files for rsync.net backup, add them in user.private
-#============================================================================
-#==================Below lines are auto merged===============================
-#============================================================================
-EOF
+# translate user.private to auto.rsync.net.exclude
+# attch /backup to beginning of each file
+cp $backuplistsdir/header.rsync.net.excl $rsync_exclude
 while read f
 do
 	if [ -e "$f" ]; then
@@ -32,3 +27,4 @@ do
 		echo $f >> $rsync_exclude
 	fi
 done < $private_list
+
