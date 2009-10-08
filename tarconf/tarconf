@@ -24,6 +24,7 @@ fi
 cat $filelist_tarconf | remove-nonexists-files | remove-leading-slash | tar cpz -f "$tarfile" \
 	-C / \
 	-T - \
+	--transform "s,home/sylecn/,,g" \
 	--exclude-vcs \
 	-X $excludelist_noslash \
 	--dereference --hard-dereference --check-links
