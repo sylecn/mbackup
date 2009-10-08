@@ -58,6 +58,14 @@ do
 	cat $f >> $backuplist
 done
 
+#build includelist
+cp $backuplistsdir/auto.include.header $includelist
+for f in `ls $backuplistsdir/incl.*`
+do
+	debug "find backup list $f"
+	cat $f >> $includelist
+done
+
 #build excludelist
 cp $backuplistsdir/auto.exclude.header $excludelist
 for f in `ls $backuplistsdir/excl.*`

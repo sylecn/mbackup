@@ -5,3 +5,4 @@ diff ./ubl `which ubl`
 diff ./mb `which mb`
 diff ./mbackup `which mbackup`
 
+exit 0

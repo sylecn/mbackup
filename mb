@@ -12,7 +12,7 @@ fi
 
 . $configfile
 
-OPTIONS=" -h --itemize-changes --delete-during -a -r --log-file=/var/log/mbackup.log --files-from=$backuplist --exclude-from=$excludelist "
+OPTIONS=" -h --itemize-changes --delete-during -a -r --log-file=/var/log/mbackup.log --files-from=$backuplist --include-from=$includelist --exclude-from=$excludelist "
 
 #backup files to $targetdir
 sudo rsync $OPTIONS / $targetdir

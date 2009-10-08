@@ -10,7 +10,7 @@ fi
 
 . $configfile
 
-/usr/bin/rsync -q -h --delete-during -a -r --log-file=/var/log/mbackup.log --files-from=$backuplist --exclude-from=$excludelist / $targetdir
+/usr/bin/rsync -q -h --delete-during -a -r --log-file=/var/log/mbackup.log --files-from=$backuplist --include-from=$includelist --exclude-from=$excludelist / $targetdir
 
 #check backup list, give a warning if backup list file is more than 3-day-old
 /home/sylecn/bin/cbl $backuplist
