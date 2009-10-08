@@ -1,0 +1,71 @@
+#!/bin/bash 
+#
+# file:
+#   ~/bin/update-backup-list
+# description:
+#   generate ~/.mbackup/backuplists/auto.*
+
+configfile="$HOME/.mbackup/config"
+
+## debug output
+debug () {
+	[ $DEBUG -eq 1 ] && echo "$*"
+}
+
+## Usage: remove_duplicated_lines filename
+## remove duplicated lines in given file
+remove_duplicated_lines () {
+	if [ -z "$1" ]; then
+		echo "remove_duplicated_lines: error: no filename given."
+		return 1
+	fi
+	if ! [ -e "$1" ]; then
+		echo "remove_duplicated_lines: error: file not exists: $1."
+		return 1
+	fi
+	filename="$1"
+	tmpfile="$filename".tmp
+	cp $filename $tmpfile
+	/usr/bin/sort "$tmpfile" | /usr/bin/uniq > "$filename"
+	rm $tmpfile
+}
+
+## set to 1 to enable debug output
+DEBUG=0
+EE_CONFIG_NOT_FOUND=1
+
+if ! [ -e $configfile ]; then
+	echo "ubl: error: mbackup config file $configfile not found."
+	exit $EE_CONFIG_NOT_FOUND
+fi
+
+. $configfile
+
+pre_ubl_script="$backuplistsdir/pre-ubl"
+
+#source pre-ubl script if there is one
+if [ -e $pre_ubl_script ]; then
+	. $pre_ubl_script
+fi
+
+echo "updating backup list..."
+
+#build backuplist
+cp $backuplistsdir/auto.backup.header $backuplist
+for f in `ls $backuplistsdir/user.*`
+do
+	debug "find backup list $f"
+	cat $f >> $backuplist
+done
+
+#build excludelist
+cp $backuplistsdir/auto.exclude.header $excludelist
+for f in `ls $backuplistsdir/excl.*`
+do
+	debug "find exclude list $f"
+	cat $f >> $excludelist
+done
+
+echo "done."
+
+exit 0
