@@ -1,7 +1,7 @@
 * DONE backup all old configs and scripts.
   see current-working-backup/
 * new file structure
-  #scripts, no change
+  #scripts
   ~/bin/ubl
   ~/bin/mb
   /usr/local/bin/mbackup
@@ -13,34 +13,18 @@
     TODO how to make a tar ball using rsync format file list?
   rsync.net backup
 * backup list files
-  files named auto.* are auto generated lists
-  files named user.* are user maintained lists
+  | file name pattern | description                                |
+  |-------------------+--------------------------------------------|
+  | auto.*            | auto generated lists                       |
+  | user.*            | backup lists                               |
+  | excl.*            | exclude lists                              |
+  | once.*            | files don't change. backup once is enough. |
   
-  #the main backup file for local mbackup cron job
+  #the main backup file for mbackup and mb.
+  #set in ~/.mbackup/config
+
   ~/.mbackup/backuplists/auto.backup
-  ~/.mbackup/backuplists/auto.backup.header
-
   ~/.mbackup/backuplists/auto.exclude
-  ~/.mbackup/backuplists/auto.exclude.header
-
-  ~/.mbackup/backuplists/user.public            any thing doesn't belong below
-  ~/.mbackup/backuplists/user.publicconfigs     public configs, small file size
-  ~/.mbackup/backuplists/user.private           private keys, passwords, credit cards, ...
-
-  ~/.mbackup/backuplists/excl.default           global exclude list
-
-  other user added lists, must follow naming convention.
-  ~/.mbackup/backuplists/user.svim
-  #this file doesn't belong here, should be part of svim project
-  #~/.mbackup/backuplists/user.svim.header
-  TODO in ubl. remove files already deleted from svimlog.
-  TODO build svim to a separate program, not only a alias/function.
-
-* changes needed for mbackup
-  add config file for vars in mb and mbackup.
-  see how cbl is used. merge cbl? cbl is not used directly by the user.
-  rewrite ubl
-  how to use rsyslog? will it create a log file with right permission for me?
 
 * changes needed for tarconf
 * create rsync.net-backup
@@ -49,3 +33,6 @@
   TODO write a installer
   TODO write a man page
   
+* DONE in ubl. remove files already deleted from svimlog.
+* DONE auto remove non-exist files and give warning when merging svimlog
+* DONE changes needed for mbackup
