@@ -22,7 +22,7 @@ echo "backup files to rsync.net server"
 # use sylecn's ssh config and private key
 # don't show progress for each file when using "mb-online init"
 # use two exclude file
-INITOPTIONS="-e 'ssh -F /home/sylecn/.ssh/config -i /home/sylecn/.ssh/id_rsa' -h --delete-during -a -r --log-file=$rsync_net_log --files-from=$backuplist --exclude-from=$rsync_exclude --exclude-from=$excludelist"
+INITOPTIONS="-e 'ssh -F /home/sylecn/.ssh/config -i /home/sylecn/.ssh/id_rsa' -h --delete-during -a -r --log-file=$rsync_net_log --exclude-from=$rsync_exclude"
 OPTIONS="--itemize-changes $INITOPTIONS"
 
 TAR=rsync:backup/
@@ -38,11 +38,15 @@ then
 		exit 1
 	fi
 	# without eval rsync gives parse syntax error
-	eval sudo rsync $INITOPTIONS / $TAR
+	eval sudo rsync -n --list-only $INITOPTIONS $targetdir $TAR |grep "texts/ac"
 else
         # show what's being updated
-	eval sudo rsync $OPTIONS / $TAR
+	eval sudo rsync $OPTIONS $targetdir $TAR
 fi
+
+#give a warning if exclude list more than 3-day-old
+/home/sylecn/bin/cbl $rsync_exclude
+
 
 #TODO now how to backup things in user.private
 #     local gpg then upload? use duplicity?

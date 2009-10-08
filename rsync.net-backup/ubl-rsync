@@ -1,0 +1,34 @@
+#!/bin/bash 
+
+#update rsync.net.excl from user.private
+#add /backup at each valid line
+
+configfile="$HOME/.mbackup/config"
+
+if ! [ -e $configfile ]; then
+	echo "mb: error: mbackup config file $configfile not found."
+	exit 1
+fi
+
+. $configfile
+
+echo "updating $rsync_exclude ..."
+
+private_list="${backuplistsdir}/user.private"
+
+cat > $rsync_exclude <<EOF
+#DO NOT MODIFY THIS FILE
+#this file is generated automatically and updated frequently by cron script
+#if you need to add private files for rsync.net backup, add them in user.private
+#============================================================================
+#==================Below lines are auto merged===============================
+#============================================================================
+EOF
+while read f
+do
+	if [ -e "$f" ]; then
+		echo "/backup"$f >> $rsync_exclude
+	else
+		echo $f >> $rsync_exclude
+	fi
+done < $private_list
