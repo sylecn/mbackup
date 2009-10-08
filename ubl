@@ -51,7 +51,7 @@ fi
 echo "updating backup list..."
 
 #build backuplist
-cp $backuplistsdir/auto.backup.header $backuplist
+cp $backuplistsdir/header.auto.backup $backuplist
 for f in `ls $backuplistsdir/user.*`
 do
 	debug "find backup list $f"
@@ -59,7 +59,7 @@ do
 done
 
 #build includelist
-cp $backuplistsdir/auto.include.header $includelist
+cp $backuplistsdir/header.auto.include $includelist
 for f in `ls $backuplistsdir/incl.*`
 do
 	debug "find backup list $f"
@@ -67,7 +67,7 @@ do
 done
 
 #build excludelist
-cp $backuplistsdir/auto.exclude.header $excludelist
+cp $backuplistsdir/header.auto.exclude $excludelist
 for f in `ls $backuplistsdir/excl.*`
 do
 	debug "find exclude list $f"
