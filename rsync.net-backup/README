@@ -1,0 +1,35 @@
+-*- Mode: text -*-
+mbackup for rsync.net online backup service
+2009-10-07
+Time-stamp: <2009-10-07>
+
+Preparation before doing mbackup
+
+1. get your account ready
+
+2. add some alias/bookmarks
+   ~/.ssh/config
+   -------------
+   Host rsync
+     HostName usw-s008.rsync.net
+     User 8368
+     ForwardX11 no
+     
+   ~/.lftp/bookmarks
+   -----------------
+   rsync   sftp://8368@usw-s008.rsync.net
+
+3. install your public key(s)
+   #generate a authorized_keys file by concatenating
+   #your public ssh key and root's public ssh key
+   #upload it to authorized_keys file
+   scp ~/keys/my-public-keys rsync:.ssh/authorized_keys
+   #test your key is ready for every user:
+   ssh rsync ls
+
+Backup non-sensitive data using rsync.
+
+Backup sensitive data:
+
+first sign it with gpg, then upload using rsync.
+

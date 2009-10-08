@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+# This script backup files in $targetdir but not in user.private
+# to rsync.net server.
+#
+
+configfile="$HOME/.mbackup/config"
+
+if ! [ -e $configfile ]; then
+	echo "mb: error: mbackup config file $configfile not found."
+	exit 1
+fi
+
+. $configfile
+
+echo "backup files to rsync.net server"
+
+# don't show progress for each file when using "mb-online init"
+INITOPTIONS="-e 'ssh -F /home/sylecn/.ssh/config -i /home/sylecn/.ssh/id_rsa' -h --delete-during -a -r --log-file=$rsync_net_log --exclude-from=$rsync_exclude"
+OPTIONS="--itemize-changes $INITOPTIONS"
+
+TAR=rsync:backup/
+
+if [ "$1" == "init" ]
+then
+	# when doing init tranfer
+	# show error if the target dir exists.
+	ssh rsync ls backup/ > /dev/null 2>&1
+	if [ $? -eq 0 ]; then
+		echo "mb-online: error: old backup detected. "
+		echo "please rename rsync:backup/, or old files may get deleted!"
+		exit 0
+	fi
+	echo sudo rsync -n --list-only $INITOPTIONS $targetdir $TAR > ~/d/rsync.net.init.filelist
+else
+        # show what's being updated
+	sudo rsync -n --list-only $OPTIONS $targetdir $TAR
+fi
