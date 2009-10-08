@@ -1,0 +1,23 @@
+#!/bin/bash 
+
+#make a tar archive for files in user.publicconfig
+#Usage: tarconf [OUTPUT_FILE]
+#Sample Usage:
+#    tarconf                     backup to ~/Dropbox/conf.tar.gz
+#    tarconf ~/d/conf.tar.bz2  backup to given file
+
+filelist="$HOME/.mbackup/backuplists/user.publicconfigs"
+excludelist="$HOME/.mbackup/backuplists/tarconf.excl"
+
+if [ -z "$1" ]; then
+	tarfile="$HOME/Dropbox/conf.tar.gz"
+else
+	tarfile="$1"
+fi
+
+cat $filelist | remove-nonexists-files | remove-leading-slash | tar uap -f "$tarfile" \
+	-C / \
+	-T - \
+	--exclude-vcs \
+	-X $excludelist \
+	--dereference --hard-dereference --check-links
