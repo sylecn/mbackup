@@ -1,3 +1,0 @@
-# m h  dom mon dow   command
-00 20 * * * /home/sylecn/bin/mbackup -q
-
