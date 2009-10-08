@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#tarconf-upload upload ~/d/conf.tar to the following online service:
+#  getdropbox.com
+#  host56
+#  110mb
+
+local_tar_file="$HOME/d/conf.tar"
+lftp="/usr/bin/lftp"
+
+if ! [ -e $local_tar_file ]; then
+	echo "tarconf-upload: error: local copy doesn't exists. "
+	exit 1
+fi
+
+#update ~/Dropbox/conf.tar
+#it will be sync to getdropbox.com if the daemon is running.
+cp $local_tar_file ~/Dropbox/
+
+#upload to host56 and 110mb
+$lftp -c 'open host56 -e "put '$local_tar_file'"'
+$lftp -c 'open 110mb -e "put '$local_tar_file'"'
