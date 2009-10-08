@@ -1,12 +1,12 @@
 tarconf
 
-tarconf helps you backup all your public configs into a tar.gz file, which you
+tarconf helps you backup all your public configs into a tar file, which you
 can upload to your web server or transfer to your remote ssh server.
 
 [install]
 get ready filelist:
 #files to backup
-~/.mbackup/backuplists/user.publicconfigs
+~/.mbackup/backuplists/user.tarconf
 #files to exclude
 ~/.mbackup/backuplists/tarconf.excl
 
@@ -18,3 +18,5 @@ helper scripts:
 
 install to crontab
 I use ~/bin/admin-summary.weekly
+#the command is:
+~/bin/tarconf ~/Dropbox/conf.tar
