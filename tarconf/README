@@ -1,0 +1,20 @@
+tarconf
+
+tarconf helps you backup all your public configs into a tar.gz file, which you
+can upload to your web server or transfer to your remote ssh server.
+
+[install]
+get ready filelist:
+#files to backup
+~/.mbackup/backuplists/user.publicconfigs
+#files to exclude
+~/.mbackup/backuplists/tarconf.excl
+
+helper scripts:
+#remove comments and nonexists file
+~/bin/remove-nonexists-files
+#remove leading slash
+~/bin/remove-leading-slash
+
+install to crontab
+I use ~/bin/admin-summary.weekly

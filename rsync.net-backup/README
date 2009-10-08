@@ -1,7 +1,7 @@
 -*- Mode: text -*-
 mbackup for rsync.net online backup service
 2009-10-07
-Time-stamp: <2009-10-07>
+Time-stamp: <2009-10-08>
 
 Preparation before doing mbackup
 
@@ -33,3 +33,4 @@ Backup sensitive data:
 
 first sign it with gpg, then upload using rsync.
 
+TODO read man gpg

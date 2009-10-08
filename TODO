@@ -27,6 +27,7 @@
   ~/.mbackup/backuplists/auto.exclude
 
 * changes needed for tarconf
+  update crontab to use new tarconf
 * create rsync.net-backup
   
 * formalize this program						:low:

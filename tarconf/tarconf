@@ -3,21 +3,27 @@
 #make a tar archive for files in user.publicconfig
 #Usage: tarconf [OUTPUT_FILE]
 #Sample Usage:
-#    tarconf                     backup to ~/Dropbox/conf.tar.gz
-#    tarconf ~/d/conf.tar.bz2  backup to given file
+#    tarconf                       backup to default file ~/Dropbox/conf.tar.gz
+#    tarconf ~/d/conf.tar.gz       backup to given file
 
-filelist="$HOME/.mbackup/backuplists/user.publicconfigs"
-excludelist="$HOME/.mbackup/backuplists/tarconf.excl"
+filelist_tarconf="$HOME/.mbackup/backuplists/user.tarconf"
+excludelist_tarconf="$HOME/.mbackup/backuplists/tarconf.excl"
+excludelist="$HOME/.mbackup/backuplists/auto.exclude"
+excludelist_noslash="$HOME/.mbackup/backuplists/auto.tarconf.exclude.noslash"
 
-if [ -z "$1" ]; then
-	tarfile="$HOME/Dropbox/conf.tar.gz"
-else
+#default tarfile
+tarfile="$HOME/d/conf.tar"
+
+# build $excludelist_noslash
+cat $excludelist $excludelist_tarconf | remove-comments "shell" | remove-leading-slash > $excludelist_noslash
+
+if [ -n "$1" ]; then
 	tarfile="$1"
 fi
 
-cat $filelist | remove-nonexists-files | remove-leading-slash | tar uap -f "$tarfile" \
+cat $filelist_tarconf | remove-nonexists-files | remove-leading-slash | tar cpz -f "$tarfile" \
 	-C / \
 	-T - \
 	--exclude-vcs \
-	-X $excludelist \
+	-X $excludelist_noslash \
 	--dereference --hard-dereference --check-links
