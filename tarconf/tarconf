@@ -3,7 +3,7 @@
 #make a tar archive for files in user.publicconfig
 #Usage: tarconf [OUTPUT_FILE]
 #Sample Usage:
-#    tarconf                       backup to default file ~/Dropbox/conf.tar.gz
+#    tarconf                       backup to default file
 #    tarconf ~/d/conf.tar.gz       backup to given file
 
 filelist_tarconf="$HOME/.mbackup/backuplists/user.tarconf"
