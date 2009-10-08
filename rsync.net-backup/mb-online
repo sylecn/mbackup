@@ -1,8 +1,12 @@
 #!/bin/bash
 #
-# This script backup files in $targetdir but not in user.private
-# to rsync.net server.
-#
+# This script backup files from $backuplist to rsync.net server.
+# use mbackup lists:
+#     backuplist="${backuplistsdir}/auto.backup"
+#     excludelist="${backuplistsdir}/auto.exclude"
+# and in addition:
+#     exclude one more file:
+#     rsync_exclude="${backuplistsdir}/user.private"
 
 configfile="$HOME/.mbackup/config"
 
@@ -15,8 +19,10 @@ fi
 
 echo "backup files to rsync.net server"
 
+# use sylecn's ssh config and private key
 # don't show progress for each file when using "mb-online init"
-INITOPTIONS="-e 'ssh -F /home/sylecn/.ssh/config -i /home/sylecn/.ssh/id_rsa' -h --delete-during -a -r --log-file=$rsync_net_log --exclude-from=$rsync_exclude"
+# use two exclude file
+INITOPTIONS="-e 'ssh -F /home/sylecn/.ssh/config -i /home/sylecn/.ssh/id_rsa' -h --delete-during -a -r --log-file=$rsync_net_log --files-from=$backuplist --exclude-from=$rsync_exclude --exclude-from=$excludelist"
 OPTIONS="--itemize-changes $INITOPTIONS"
 
 TAR=rsync:backup/
@@ -29,10 +35,14 @@ then
 	if [ $? -eq 0 ]; then
 		echo "mb-online: error: old backup detected. "
 		echo "please rename rsync:backup/, or old files may get deleted!"
-		exit 0
+		exit 1
 	fi
-	echo sudo rsync -n --list-only $INITOPTIONS $targetdir $TAR > ~/d/rsync.net.init.filelist
+	# without eval rsync gives parse syntax error
+	eval sudo rsync $INITOPTIONS / $TAR
 else
         # show what's being updated
-	sudo rsync -n --list-only $OPTIONS $targetdir $TAR
+	eval sudo rsync $OPTIONS / $TAR
 fi
+
+#TODO now how to backup things in user.private
+#     local gpg then upload? use duplicity?
