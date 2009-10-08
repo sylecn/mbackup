@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# This script backup files in ~/bak/backup to /backup
+# This script backup files in $backuplist to $targetdir
 #
 
 configfile="$HOME/.mbackup/config"
