@@ -30,4 +30,4 @@ cryptmount --unmount pri
 #
 #upload one big vdisk file to rsync.net
 #
-eval sudo $rsync $OPTIONS $SRC_PRI $TAR_PRI
+echo eval sudo $rsync $OPTIONS_PRI_UPLOAD $SRC_PRI $TAR_PRI
