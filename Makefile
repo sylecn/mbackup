@@ -1,9 +1,9 @@
 default: check
 check: diff
 install:
-	ln -s $(CURDIR)/cbl ~/bin/
-	ln -s $(CURDIR)/ubl ~/bin/
-	ln -s $(CURDIR)/mb ~/bin/
+	ln -fs $(CURDIR)/cbl ~/bin/
+	ln -fs $(CURDIR)/ubl ~/bin/
+	ln -fs $(CURDIR)/mb ~/bin/
 	sudo cp $(CURDIR)/mbackup /usr/local/bin/
 diff:
 	diff -q cbl `which cbl`

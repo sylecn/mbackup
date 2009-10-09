@@ -1,9 +1,9 @@
 default: check
 check: diff
 install:
-	ln -s $(CURDIR)/mb-rsync ~/bin/
-	ln -s $(CURDIR)/mb-rsync-pri ~/bin/
-	ln -s $(CURDIR)/ubl-rsync ~/bin/
+	ln -fs $(CURDIR)/mb-rsync ~/bin/
+	ln -fs $(CURDIR)/mb-rsync-pri ~/bin/
+	ln -fs $(CURDIR)/ubl-rsync ~/bin/
 diff:
 	diff -q mb-rsync `which mb-rsync`
 	diff -q mb-rsync-pri `which mb-rsync-pri`
