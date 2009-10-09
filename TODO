@@ -27,9 +27,8 @@
   ~/.mbackup/backuplists/auto.exclude
 
 * update ~/mini-howto/cron-mbackup
-* create rsync.net-backup
-  remove all -n --list-only options
-  how to input password automatically when mount pri?
+* merge mb and mbackup
+  see what's the difference between them.
   
 * formalize this program						:low:
   TODO write a installer
@@ -39,3 +38,5 @@
 * DONE auto remove non-exist files and give warning when merging svimlog
 * DONE changes needed for mbackup
 * DONE changes needed for tarconf
+* DONE create rsync.net-backup
+  
