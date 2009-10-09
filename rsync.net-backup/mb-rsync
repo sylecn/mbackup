@@ -1,12 +1,8 @@
 #!/bin/bash
 #
-# This script backup files from $backuplist to rsync.net server.
-# use mbackup lists:
-#     backuplist="${backuplistsdir}/auto.backup"
-#     excludelist="${backuplistsdir}/auto.exclude"
-# and in addition:
-#     exclude one more file:
-#     rsync_exclude="${backuplistsdir}/user.private"
+# This script backup files from /backup/ to rsync.net server.
+# exclude files on private list: user.private
+#
 
 configfile="$HOME/.mbackup/config"
 
