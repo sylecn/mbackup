@@ -1,8 +1,0 @@
-#!/bin/bash 
-
-diff ./cbl `which cbl`
-diff ./ubl `which ubl`
-diff ./mb `which mb`
-diff ./mbackup `which mbackup`
-
-exit 0
