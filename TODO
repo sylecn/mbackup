@@ -26,6 +26,7 @@
   ~/.mbackup/backuplists/auto.backup
   ~/.mbackup/backuplists/auto.exclude
 
+* update ~/mini-howto/cron-mbackup
 * create rsync.net-backup
   
 * formalize this program						:low:
