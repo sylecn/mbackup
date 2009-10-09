@@ -28,6 +28,8 @@
 
 * update ~/mini-howto/cron-mbackup
 * create rsync.net-backup
+  remove all -n --list-only options
+  how to input password automatically when mount pri?
   
 * formalize this program						:low:
   TODO write a installer

@@ -1,0 +1,33 @@
+#!/bin/bash 
+
+#mb-rsync-pri - backup private files in /backup/ to rsync.net
+#implementation:
+#  use a encrypted virtual disk, rsync to it, then upload that big vdisk file.
+
+#var passed down from mb-rsync
+#  $rsync_exclude       private file list
+#  $OPTIONS*            rsync options
+#  $rsync
+
+OPTIONS_PRI_LOCAL="--itemize-changes $OPTIONS_BASE --files-from=$rsync_exclude"
+OPTIONS_PRI_UPLOAD="--itemize-changes $OPTIONS_SSH $OPTIONS_BASE"
+
+vdisk_root="/home/sylecn/mnt/pri"
+
+SRC_PRI="/home/sylecn/vdisk/pri"
+TAR_PRI=rsync:backup.pri
+
+#
+#update copy in vdisk
+#
+#read passwords from file-descriptor num instead of from the terminal
+#ref: http://www.itworld.com/nls_unix_filedescriptor060608
+exec 8< /home/sylecn/keys/private/crypt.pri.password
+cryptmount -w 8 pri
+eval sudo $rsync $OPTIONS_PRI_LOCAL / $vdisk_root
+cryptmount --unmount pri
+
+#
+#upload one big vdisk file to rsync.net
+#
+eval sudo $rsync $OPTIONS $SRC_PRI $TAR_PRI

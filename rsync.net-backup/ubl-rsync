@@ -1,7 +1,7 @@
 #!/bin/bash 
 
-#update rsync.net.excl from user.private
-#add /backup at each valid line
+#update rsync.net.excl according to user.private
+#attch /backup to beginning of each file
 
 configfile="$HOME/.mbackup/config"
 

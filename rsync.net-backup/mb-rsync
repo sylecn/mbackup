@@ -4,6 +4,8 @@
 # exclude files on private list: user.private
 #
 
+PATH=/home/sylecn/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
 configfile="$HOME/.mbackup/config"
 
 if ! [ -e $configfile ]; then
@@ -17,13 +19,15 @@ echo "backup files to rsync.net server"
 
 rsync="/usr/bin/rsync"
 
+OPTIONS_BASE="-h --delete-during -a -r --log-file=$rsync_net_log"
 # use sylecn's ssh config and private key
+OPTIONS_SSH="-e 'ssh -F /home/sylecn/.ssh/config -i /home/sylecn/.ssh/id_rsa'"
 # don't show progress for each file when using "mb-online init"
-# use two exclude file
-INITOPTIONS="-e 'ssh -F /home/sylecn/.ssh/config -i /home/sylecn/.ssh/id_rsa' -h --delete-during -a -r --log-file=$rsync_net_log --exclude-from=$rsync_exclude"
+INITOPTIONS="$OPTIONS_SSH $OPTIONS_BASE --exclude-from=$rsync_exclude"
+# show progress for each file when using "mb-online"
 OPTIONS="--itemize-changes $INITOPTIONS"
 
-TAR=rsync:backup/
+TAR=rsync:backup
 
 if [ "$1" == "init" ]
 then
@@ -36,20 +40,15 @@ then
 		exit 1
 	fi
 	# without eval rsync gives parse syntax error
-	eval sudo $rsync -n --list-only $INITOPTIONS $targetdir $TAR |grep "texts/ac"
+	echo eval sudo $rsync -n --list-only $INITOPTIONS $targetdir $TAR |grep "texts/ac"
 else
         # show what's being updated
-	eval sudo $rsync $OPTIONS $targetdir $TAR
+	echo eval sudo $rsync $OPTIONS $targetdir $TAR
 fi
 
 #now backup things in user.private
+#source the pri backup script, so env var will be passed to it.
+. /home/sylecn/bin/mb-rsync-pri
 
-#use a encrypted virtual disk, rsync to it, then upload that big vdisk file.
-#non-free truecrypt
-#free http://en.wikipedia.org/wiki/Dm-crypt
-private_files="$rsync_exclude"
-private_target="$HOME/bak/private.gpg"
-
-
-#give a warning if exclude list more than 3-day-old
+#give a warning if exclude list is more than 3-day-old
 /home/sylecn/bin/cbl $rsync_exclude
