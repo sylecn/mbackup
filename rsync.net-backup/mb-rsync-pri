@@ -25,7 +25,12 @@ TAR_PRI=rsync:backup.pri
 #read passwords from file-descriptor num instead of from the terminal
 #ref: http://www.itworld.com/nls_unix_filedescriptor060608
 exec 8< /home/sylecn/keys/private/crypt.pri.password
-cryptmount -w 8 pri
+cryptmount_out=`cryptmount -w 8 pri 2>&1`; r=$?
+if [ "$r" -ne 0 ]; then
+	echo "mb-rsync-pri: error: cryptmount failed."
+	echo "$cryptmount_out"
+	exit $r
+fi
 eval sudo $rsync $OPTIONS_PRI_LOCAL / $vdisk_root
 cryptmount --unmount pri
 
