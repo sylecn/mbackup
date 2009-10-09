@@ -9,8 +9,10 @@
 #  $OPTIONS*            rsync options
 #  $rsync
 
-OPTIONS_PRI_LOCAL="--itemize-changes $OPTIONS_BASE --files-from=$rsync_exclude"
-OPTIONS_PRI_UPLOAD="--itemize-changes $OPTIONS_SSH $OPTIONS_BASE"
+#update privated files to local encrypted vdisk
+OPTIONS_PRI_LOCAL="$OPTIONS_BASE --files-from=$rsync_exclude --itemize-changes"
+#update vdisk file to rsync.net server
+OPTIONS_PRI_UPLOAD="$OPTIONS_SSH $OPTIONS_BASE --itemize-changes"
 
 vdisk_root="/home/sylecn/mnt/pri"
 
