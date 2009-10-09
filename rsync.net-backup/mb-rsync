@@ -15,22 +15,30 @@ fi
 
 . $configfile
 
-echo "backup files to rsync.net server"
-
 rsync="/usr/bin/rsync"
 
-OPTIONS_BASE="-h --delete-during -a -r --log-file=$rsync_net_log"
-# use sylecn's ssh config and private key
-OPTIONS_SSH="-e 'ssh -F /home/sylecn/.ssh/config -i /home/sylecn/.ssh/id_rsa'"
-# don't show progress for each file when using "mb-online init"
-INITOPTIONS="$OPTIONS_SSH $OPTIONS_BASE --exclude-from=$rsync_exclude"
-# show progress for each file when using "mb-online"
-OPTIONS="--itemize-changes $INITOPTIONS"
+OPTIONS_BASE="-h --delete-during -a -r --log-file=$rsync_net_log --exclude-from=$rsync_exclude"
+
+#
+#backup things in user.private
+#
+
+#source the pri backup script, so env var will be passed to it.
+echo "Updating private files to rsync.net"
+. /home/sylecn/bin/mb-rsync-pri
+echo "done."
+
+#
+#backup things not in user.private
+#
 
 TAR=rsync:backup
 
 if [ "$1" == "init" ]
 then
+	current_time=`date`
+	echo "init started at $current_time"
+
 	# when doing init tranfer
 	# show error if the target dir exists.
 	ssh $rsync ls backup/ > /dev/null 2>&1
@@ -40,15 +48,19 @@ then
 		exit 1
 	fi
 	# without eval rsync gives parse syntax error
-	echo eval sudo $rsync -n --list-only $INITOPTIONS $targetdir $TAR |grep "texts/ac"
-else
-        # show what's being updated
-	echo eval sudo $rsync $OPTIONS $targetdir $TAR
-fi
+	# use -n --list-only -v to do test run,
+	# then check /var/log/rsync.net.log because I use -q in init backup.
+	# eval sudo $rsync -n --list-only -v $INITOPTIONS $targetdir $TAR
+	eval sudo $rsync -q $OPTIONS_BASE $targetdir $TAR
 
-#now backup things in user.private
-#source the pri backup script, so env var will be passed to it.
-. /home/sylecn/bin/mb-rsync-pri
+	current_time=`date`
+	echo "init ended at $current_time"
+else
+	echo "Updating public files to rsync.net"
+        # show what's being updated
+	eval sudo $rsync --progress $OPTIONS_BASE $targetdir $TAR
+	echo "done."
+fi
 
 #give a warning if exclude list is more than 3-day-old
 /home/sylecn/bin/cbl $rsync_exclude

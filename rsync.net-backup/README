@@ -20,16 +20,44 @@ Preparation before doing mbackup
    rsync   sftp://8368@usw-s008.rsync.net
 
 3. install your public key(s)
-   #generate a authorized_keys file by concatenating
-   #your public ssh key and root's public ssh key
-   #upload it to authorized_keys file
+   #upload public key to remote authorized_keys file
    scp ~/keys/my-public-keys rsync:.ssh/authorized_keys
-   #test your key is ready for every user:
-   ssh rsync ls
 
-4. mv old backup dirs if necessary
-   backup
-   backup.pri
-
-5. get ready mbackup/rsync.net scripts and configs
+   #make sure id_rsa and config is at both
+   /root/.ssh/
+   /home/sylecn/.ssh/
+   no links allowed.
    
+   #test your key is ready for every user:
+   $ ssh rsync ls
+   # ssh rsync ls
+
+4. mv old backup if necessary
+   mv backup/ old-backup
+
+5. config logrotates for /var/log/rsync.net.log
+   /etc/logrotate.d/rsync.net
+
+#changed from /var/log/aptitude
+/var/log/rsync.net.log {
+  rotate 4
+  weekly
+  compress
+  missingok
+  notifempty
+}
+
+6. get ready mbackup/rsync.net scripts and configs
+   #create links in ~/bin/
+   make install
+
+6.5 testing
+    as sylecn:
+    mb-rsync
+    as root:
+    /home/sylecn/bin/mb-rsync
+
+7. setup crontab
+run half an hour later than mbackup.
+
+

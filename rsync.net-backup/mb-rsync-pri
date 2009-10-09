@@ -11,8 +11,6 @@
 
 #update privated files to local encrypted vdisk
 OPTIONS_PRI_LOCAL="$OPTIONS_BASE --files-from=$rsync_exclude --itemize-changes"
-#update vdisk file to rsync.net server
-OPTIONS_PRI_UPLOAD="$OPTIONS_SSH $OPTIONS_BASE --itemize-changes"
 
 vdisk_root="/home/sylecn/mnt/pri"
 
@@ -25,7 +23,7 @@ TAR_PRI=rsync:backup.pri
 #read passwords from file-descriptor num instead of from the terminal
 #ref: http://www.itworld.com/nls_unix_filedescriptor060608
 exec 8< /home/sylecn/keys/private/crypt.pri.password
-cryptmount_out=`cryptmount -w 8 pri 2>&1`; r=$?
+cryptmount_out=`cryptmount -w 8 pri`; r=$?
 if [ "$r" -ne 0 ]; then
 	echo "mb-rsync-pri: error: cryptmount failed."
 	echo "$cryptmount_out"
@@ -37,4 +35,4 @@ cryptmount --unmount pri
 #
 #upload one big vdisk file to rsync.net
 #
-echo eval sudo $rsync $OPTIONS_PRI_UPLOAD $SRC_PRI $TAR_PRI
+sudo $rsync -h -a --log-file=/var/log/rsync.net.log --progress $SRC_PRI $TAR_PRI
