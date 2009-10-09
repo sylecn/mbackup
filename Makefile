@@ -1,7 +1,12 @@
 default: check
 check: diff
-install: 
-	cp cbl ubl mb ~/bin/
-	sudo cp mbackup /usr/local/bin/
+install:
+	ln -s $(CURDIR)/cbl ~/bin/
+	ln -s $(CURDIR)/ubl ~/bin/
+	ln -s $(CURDIR)/mb ~/bin/
+	sudo cp $(CURDIR)/mbackup /usr/local/bin/
 diff:
-	./diff_with_running_version
+	diff -q cbl `which cbl`
+	diff -q ubl `which ubl`
+	diff -q mb `which mb`
+	diff -q mbackup `which mbackup`
