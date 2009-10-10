@@ -12,16 +12,6 @@
 # Report bugs to Yuanle Song <sylecn@gmail.com>.
 #
 
-# this script helps you trim last slash(/) in string
-# Usage: trim_last_slash [str]
-# Then use $trimedstr to get resulting string.
-trim_last_slash () {
-    orgstr=$1
-    slash="/"
-    empty=""
-    trimedstr=${orgstr/%$slash/$empty}
-}
-
 EE_TAR_DIR_NOT_FOUND=1
 
 configfile="$HOME/.mbackup/config"
@@ -46,11 +36,8 @@ fi
 
 if [ -n "$1" ]
 then
-	TAR="$1"
-
 	# remove trailing / in $TAR if it is there
-        trim_last_slash $TAR
-        TAR=$trimedstr
+	TAR="${1%/}"
 
 	if [ -d $TAR ]
 	then
