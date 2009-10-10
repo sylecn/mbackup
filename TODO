@@ -1,5 +1,8 @@
-* DONE backup all old configs and scripts.
-  see current-working-backup/
+* 
+* mb dir should not use exit after rsync to dir. that will skip the cbl.
+* update ~/mini-howto/cron-mbackup
+* merge mb and mbackup
+  see what's the difference between them.
 * new file structure
   #scripts
   ~/bin/ubl
@@ -26,10 +29,6 @@
   ~/.mbackup/backuplists/auto.backup
   ~/.mbackup/backuplists/auto.exclude
 
-* update ~/mini-howto/cron-mbackup
-* merge mb and mbackup
-  see what's the difference between them.
-  
 * formalize this program						:low:
   TODO write a installer
   TODO write a man page
@@ -40,3 +39,5 @@
 * DONE changes needed for tarconf
 * DONE create rsync.net-backup
   
+* DONE backup all old configs and scripts.
+  see current-working-backup/
