@@ -1,7 +1,28 @@
 #!/bin/bash
 #
 # This script backup files in $backuplist to $targetdir
+# Usage: mb               backup files in list to /backup
+#        mb [dir] [init]  backup files in list to /backup, then
+#                         backup /backup to the given dir
+#                         if init is given, don't use --itemize-changes opt
+# Sample Usage:
+#        mb               regular backup
+#        mb /media/BAKUP/ backup to external USB drive mounted at /media/BAKUP/
 #
+# Report bugs to Yuanle Song <sylecn@gmail.com>.
+#
+
+# this script helps you trim last slash(/) in string
+# Usage: trim_last_slash [str]
+# Then use $trimedstr to get resulting string.
+trim_last_slash () {
+    orgstr=$1
+    slash="/"
+    empty=""
+    trimedstr=${orgstr/%$slash/$empty}
+}
+
+EE_TAR_DIR_NOT_FOUND=1
 
 configfile="$HOME/.mbackup/config"
 
@@ -17,59 +38,42 @@ OPTIONS=" -h --itemize-changes --delete-during -a -r --log-file=/var/log/mbackup
 #backup files to $targetdir
 sudo rsync $OPTIONS / $targetdir
 
-#[optional]move backup files to external media
-#Usage:
-#  mb /path/to/media [init]
-#Sample:
-#  mb /media/BAKUP/
-#  mb /media/BAKUP/ init
-
-# this script helps you trim last slash(/) in string
-# please use $trimedstr to get the trimed
-function trim_last_slash
-{
-    orgstr=$1
-    slash="/"
-    empty=""
-    trimedstr=${orgstr/%$slash/$empty}
-}
-
 if [ $? -ne 0 ]
 then
 	echo "`date +"%F %r"`       rsync: some error occurred!"
 	exit 1
-else
-	if [ -n "$1" ]
-	then
-		TAR="$1"
-		# remove trailing / in $TAR if it is there
-                trim_last_slash $TAR
-                TAR=$trimedstr
+fi
 
-		if [ -d $TAR ]
+if [ -n "$1" ]
+then
+	TAR="$1"
+
+	# remove trailing / in $TAR if it is there
+        trim_last_slash $TAR
+        TAR=$trimedstr
+
+	if [ -d $TAR ]
+	then
+		echo "now backup files to extra directory[$TAR]"
+		# backup to external dir use /backup as source
+		# not the user's backup lists
+		if [ "$2" == "init" ]
 		then
-			echo "now backup files to extra directory[$TAR]"
-                        # please note backup to external dir use /backup as src
-                        # not the ~/backup file list, so don't change the cmd
-                        # unless you know what you are doing
-			if [ "$2" == "init" ]
+			if [ -d $TAR/backup ]
 			then
-				if [ -d $TAR/backup ]
-				then
-					echo "old backup detected. please rename $TAR/backup before trying init backup."
-					echo "or all old files may get deleted!"
-					exit 0
-				fi
-				sudo rsync -h --delete-during -a -r --log-file=/var/log/mbackup.log $targetdir $TAR
-			else
-				# show what's updated
-				sudo rsync -h --itemize-changes --delete-during -a -r --log-file=/var/log/mbackup.log $targetdir $TAR
+				echo "old backup detected. please rename $TAR/backup before trying init backup."
+				echo "or all old files may get deleted!"
+				exit 0
 			fi
-			exit $?
+			sudo rsync -h --delete-during -a -r --log-file=/var/log/mbackup.log $targetdir $TAR
 		else
-			echo "directory [$TAR] does not exists! backup has quit!"
-			exit 0
+			# show what's updated
+			sudo rsync -h --itemize-changes --delete-during -a -r --log-file=/var/log/mbackup.log $targetdir $TAR
 		fi
+		exit $?
+	else
+		echo "directory [$TAR] does not exists! backup has quit!"
+		exit $EE_TAR_DIR_NOT_FOUND
 	fi
 fi
 
