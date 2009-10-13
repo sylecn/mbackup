@@ -32,7 +32,7 @@ echo "done."
 #backup things not in user.private
 #
 
-TAR=rsync:backup
+TAR=rsync:
 
 if [ "$1" == "init" ]
 then
