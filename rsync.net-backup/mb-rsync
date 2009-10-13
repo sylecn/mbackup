@@ -6,10 +6,10 @@
 
 PATH=/home/sylecn/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
-configfile="$HOME/.mbackup/config"
+configfile="/home/sylecn/.mbackup/config"
 
 if ! [ -e $configfile ]; then
-	echo "mb: error: mbackup config file $configfile not found."
+	echo "mb: error: mbackup config file $configfile not found." > /dev/stderr
 	exit 1
 fi
 

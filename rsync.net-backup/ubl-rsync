@@ -6,7 +6,7 @@
 configfile="$HOME/.mbackup/config"
 
 if ! [ -e $configfile ]; then
-	echo "mb: error: mbackup config file $configfile not found."
+	echo "mb: error: mbackup config file $configfile not found." > /dev/stderr
 	exit 1
 fi
 
@@ -28,3 +28,4 @@ do
 	fi
 done < $private_list
 
+echo "done."
