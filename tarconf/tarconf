@@ -14,6 +14,8 @@ excludelist_noslash="$HOME/.mbackup/backuplists/auto.tarconf.exclude.noslash"
 #default tarfile
 tarfile="$HOME/d/conf.tar"
 
+PATH=/home/sylecn/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
 # build $excludelist_noslash
 cat $excludelist $excludelist_tarconf | remove-comments "shell" | remove-leading-slash > $excludelist_noslash
 
