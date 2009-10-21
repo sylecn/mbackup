@@ -3,7 +3,7 @@
 #update rsync.net.excl according to user.private
 #attch /backup to beginning of each file
 
-configfile="$HOME/.mbackup/config"
+configfile="/home/sylecn/.mbackup/config"
 
 if ! [ -e $configfile ]; then
 	echo "mb: error: mbackup config file $configfile not found." > /dev/stderr
