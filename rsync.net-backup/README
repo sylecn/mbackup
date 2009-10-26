@@ -23,6 +23,8 @@ Preparation before doing mbackup
    #upload public key to remote authorized_keys file
    scp ~/keys/my-public-keys rsync:.ssh/authorized_keys
 
+   try ssh-copy-id user@server
+
    #make sure id_rsa and config is at both
    /root/.ssh/
    /home/sylecn/.ssh/
