@@ -1,24 +1,22 @@
 #!/bin/sh 
 #cron backup script for root
 
-configfile="/home/sylecn/.mbackup/config"
+configfile="/etc/mbackup/config"
 
 if ! [ -e $configfile ]; then
 	echo "mbackup: error: mbackup config file $configfile not found."
+	echo "mbackup: error: mbackup config file $configfile not found." >> $mbackup_log
 	exit 1
 fi
 
 . $configfile
 
-/usr/bin/rsync -q -h --delete-during -a -r --log-file=/var/log/mbackup.log --files-from=$backuplist --include-from=$includelist --exclude-from=$excludelist / $targetdir
-
-#check backup list, give a warning if backup list file is more than 3-day-old
-/home/sylecn/bin/cbl $backuplist
+/usr/bin/rsync -q -h --delete-during -a -r --log-file=$mbackup_log --files-from=$backuplist --include-from=$includelist --exclude-from=$excludelist / $targetdir
 
 if [ $? -ne 0 ]
 then
     #send err via mail
     echo "`date +"%F %r"`        cron mbackup(rsync) error occurred"
     #log err on file
-    echo "`date +"%F %r"`        cron mbackup(rsync) error occurred" >> /var/log/mbackup.err
+    echo "`date +"%F %r"`        cron mbackup(rsync) error occurred" >> $mbackup_err
 fi
