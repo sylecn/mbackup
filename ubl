@@ -1,15 +1,35 @@
 #!/bin/bash 
 #
 # file:
-#   ~/bin/update-backup-list
+#   ~/bin/ubl
+#   ~/.mbackup/ubl.d/
 # description:
-#   generate ~/.mbackup/backuplists/auto.*
+#   update backup list for mbackup projects
+
+#
+# read config file
+#
 
 configfile="$HOME/.mbackup/config"
+
+if ! [ -e $configfile ]; then
+	echo "ubl: error: mbackup config file $configfile not found."
+	exit $EE_CONFIG_NOT_FOUND
+fi
+
+. $configfile
+
+#
+# functions
+#
 
 ## debug output
 debug () {
 	[ $DEBUG -eq 1 ] && echo "$*"
+}
+
+print_a_dot () {
+	echo -n "."
 }
 
 ## Usage: remove_duplicated_lines filename
@@ -34,45 +54,29 @@ remove_duplicated_lines () {
 DEBUG=0
 EE_CONFIG_NOT_FOUND=1
 
-if ! [ -e $configfile ]; then
-	echo "ubl: error: mbackup config file $configfile not found."
-	exit $EE_CONFIG_NOT_FOUND
+#
+# source files in ubl.d dir
+#
+
+cd $ubl_dir
+if [ -z "$1" ]; then
+        for ubl_script in `ls [0-9]*`; do
+                . ${ubl_dir}/$ubl_script
+        done
+else
+        #sh
+        case "$1" in
+                "."|"main"|"ubl")
+                echo "ubl-mb"
+                . ${ubl_dir}/10pre-ubl
+                . ${ubl_dir}/20ubl
+                ;;
+                "rsync")
+                echo "ubl-rsync"
+                . ${ubl_dir}/20rsync
+                ;;
+        esac
 fi
-
-. $configfile
-
-pre_ubl_script="$backuplistsdir/pre-ubl"
-
-#source pre-ubl script if there is one
-if [ -e $pre_ubl_script ]; then
-	. $pre_ubl_script
-fi
-
-echo "updating backup list..."
-
-#build backuplist
-cp $backuplistsdir/header.auto.backup $backuplist
-for f in `ls $backuplistsdir/user.*`
-do
-	debug "find backup list $f"
-	cat $f >> $backuplist
-done
-
-#build includelist
-cp $backuplistsdir/header.auto.include $includelist
-for f in `ls $backuplistsdir/incl.*`
-do
-	debug "find backup list $f"
-	cat $f >> $includelist
-done
-
-#build excludelist
-cp $backuplistsdir/header.auto.exclude $excludelist
-for f in `ls $backuplistsdir/excl.*`
-do
-	debug "find exclude list $f"
-	cat $f >> $excludelist
-done
 
 echo "done."
 

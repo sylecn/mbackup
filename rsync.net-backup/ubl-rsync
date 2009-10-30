@@ -1,31 +1,8 @@
-#!/bin/bash 
+#!/bin/bash
 
-#update rsync.net.excl according to user.private
-#attch /backup to beginning of each file
+# ubl-rsync : update backup lists for mb-rsync
+# this script is obsoleted.
 
-configfile="/home/sylecn/.mbackup/config"
+#run ubl
+ubl rsync
 
-if ! [ -e $configfile ]; then
-	echo "mb: error: mbackup config file $configfile not found." > /dev/stderr
-	exit 1
-fi
-
-. $configfile
-
-echo "updating $rsync_exclude ..."
-
-private_list="${backuplistsdir}/user.private"
-
-# translate user.private to auto.rsync.net.exclude
-# attch /backup to beginning of each file
-cp $backuplistsdir/header.rsync.net.excl $rsync_exclude
-while read f
-do
-	if [ -e "$f" ]; then
-		echo "/backup"$f >> $rsync_exclude
-	else
-		echo $f >> $rsync_exclude
-	fi
-done < $private_list
-
-echo "done."
