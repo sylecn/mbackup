@@ -1,0 +1,44 @@
+#!/bin/bash
+#cron backup script for root
+#
+# This script backup files from /backup/ to rsync.net server.
+# exclude files on private list: user.private
+#
+
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+#for both this script and mb-rsync-pri
+
+configfile="/etc/mbackup/config"
+
+if ! [ -e $configfile ]; then
+	echo "`date +"%F %r"`        mbackup-rsync: error: mbackup config file $configfile not found."
+	echo "`date +"%F %r"`        mbackup-rsync: error: mbackup config file $configfile not found." >> $rsync_net_err
+	exit 1
+fi
+
+. $configfile
+
+rsync="/usr/bin/rsync"
+
+OPTIONS_BASE="-q -h --delete-during -a -r --log-file=$rsync_net_log --exclude-from=$rsync_exclude"
+
+#
+#backup things in user.private
+#
+
+#source the pri backup script, so env var will be passed to it.
+echo "Updating private files to rsync.net" >> $rsync_net_log
+. /usr/local/bin/mb-rsync-pri
+echo "done." >> $rsync_net_log
+
+#
+#backup things not in user.private
+#
+
+TAR=rsync:
+
+echo "Updating public files to rsync.net" >> $rsync_net_log
+# show what's being updated
+eval $rsync --progress $OPTIONS_BASE $targetdir $TAR
+echo "done." >> $rsync_net_log
+

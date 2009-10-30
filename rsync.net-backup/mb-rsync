@@ -4,12 +4,15 @@
 # exclude files on private list: user.private
 #
 
-PATH=/home/sylecn/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+if [ "$UID" -eq 0 ]; then
+        echo "this script is not for root. try mbackup-rsync."
+        exit 1
+fi
 
-configfile="/home/sylecn/.mbackup/config"
+configfile="$HOME/.mbackup/config"
 
 if ! [ -e $configfile ]; then
-	echo "mb: error: mbackup config file $configfile not found." > /dev/stderr
+	echo "mbackup-rsync: error: mbackup config file $configfile not found." > /dev/stderr
 	exit 1
 fi
 
@@ -25,7 +28,7 @@ OPTIONS_BASE="-h --delete-during -a -r --log-file=$rsync_net_log --exclude-from=
 
 #source the pri backup script, so env var will be passed to it.
 echo "Updating private files to rsync.net"
-. /home/sylecn/bin/mb-rsync-pri
+. $HOME/bin/mb-rsync-pri
 echo "done."
 
 #

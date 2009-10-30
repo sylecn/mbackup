@@ -4,7 +4,7 @@
 #implementation:
 #  use a encrypted virtual disk, rsync to it, then upload that big vdisk file.
 
-#var passed down from mb-rsync
+#var passed down from mbackup-rsync
 #  $rsync_exclude       private file list
 #  $OPTIONS*            rsync options
 #  $rsync
@@ -29,10 +29,10 @@ if [ "$r" -ne 0 ]; then
 	echo "$cryptmount_out" > /dev/stderr
 	exit $r
 fi
-eval sudo $rsync $OPTIONS_PRI_LOCAL / $vdisk_root
+eval $rsync $OPTIONS_PRI_LOCAL / $vdisk_root
 cryptmount --unmount pri
 
 #
 #upload one big vdisk file to rsync.net
 #
-sudo $rsync -h -a --log-file=$rsync_net_log --progress $SRC_PRI $TAR_PRI
+$rsync -q -h -a --log-file=$rsync_net_log --progress $SRC_PRI $TAR_PRI

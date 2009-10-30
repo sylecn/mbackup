@@ -50,14 +50,13 @@ Preparation before doing mbackup
 }
 
 6. get ready mbackup/rsync.net scripts and configs
-   #create links in ~/bin/
    make install
 
 6.5 testing
     as sylecn:
     mb-rsync
     as root:
-    /home/sylecn/bin/mb-rsync
+    mbackup-rsync
 
 7. setup crontab
 run half an hour later than mbackup.
