@@ -28,7 +28,7 @@ OPTIONS_BASE="-q -h --delete-during -a -r --log-file=$rsync_net_log --exclude-fr
 
 #source the pri backup script, so env var will be passed to it.
 echo "Updating private files to rsync.net" >> $rsync_net_log
-. /usr/local/bin/mb-rsync-pri
+. /usr/local/bin/mbackup-rsync-pri
 echo "done." >> $rsync_net_log
 
 #
